@@ -11,7 +11,7 @@ export interface WeatherItemProps {
 
 const WeatherItem = ({ icon, value, title, toggle }: WeatherItemProps) => {
   return (
-    <article className='font-bold grid justify-items-center'>
+    <article className='font-bold grid justify-items-center min-w-[200px]'>
       {icon}
       <p className='text-4xl'>{value}</p>
       <h2 className='text-lg'>{title}</h2>

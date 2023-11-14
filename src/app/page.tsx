@@ -1,15 +1,23 @@
 'use client';
 
-import { IconTemperature, IconCloudRain, IconPlant } from '@tabler/icons-react';
-import WeatherItem, {
-  WeatherItemProps as WeatherData,
-} from '@/components/WeatherItem';
+import {
+  IconTemperature,
+  IconCloudRain,
+  IconPlant,
+  IconLoader2,
+} from '@tabler/icons-react';
+
+import useWeather from '@/hooks/useWeather';
+
+import WeatherItem, { WeatherItemProps } from '@/components/WeatherItem';
 
 export default function Home() {
-  const data: Array<WeatherData> = [
+  const { loading, data } = useWeather();
+
+  const weatherItems: Array<WeatherItemProps> = [
     {
       icon: <IconTemperature stroke={1.5} size={80} className='mb-2' />,
-      value: '20°C',
+      value: `${data.temperature}°C`,
       title: 'Temperatura ambiente',
       toggle: (checked) => {
         if (checked) {
@@ -21,7 +29,7 @@ export default function Home() {
     },
     {
       icon: <IconCloudRain stroke={1.5} size={80} className='mb-2' />,
-      value: '20%',
+      value: `${data.humidity}HR`,
       title: 'Humedad ambiente',
       toggle: (checked) => {
         if (checked) {
@@ -33,8 +41,8 @@ export default function Home() {
     },
     {
       icon: <IconPlant stroke={1.5} size={80} className='mb-2' />,
-      value: '20%',
-      title: 'Humedad de suelo',
+      value: `${data.soilStatus}`,
+      title: 'Estado del suelo',
       toggle: (checked) => {
         if (checked) {
           return console.log('Toggle soil humidity on');
@@ -51,12 +59,25 @@ export default function Home() {
         <h1 className='font-semibold mt-5 text-2xl lg:mt-16 lg:text-4xl'>
           Control de temperatura ambiente y del suelo 🌡️
         </h1>
-        <div className='flex'>
-          <section className='rounded-lg w-full bg-white text-black flex flex-col items-center justify-between p-7 gap-y-8 lg:flex-row'>
-            {data.map((item) => (
-              <WeatherItem key={item.title} {...item} />
-            ))}
+        <div className='flex flex-col bg-white text-black rounded-lg p-7 space-y-6'>
+          <section className='w-full flex flex-col items-center justify-between gap-y-8 lg:flex-row'>
+            {loading && (
+              <IconLoader2
+                className='animate-spin mx-auto text-[#2b3b9b]'
+                size={40}
+              />
+            )}
+            {!loading &&
+              weatherItems.map((item) => (
+                <WeatherItem key={item.title} {...item} />
+              ))}
           </section>
+          {!loading && (
+            <p>
+              <span className='font-semibold'>Fecha de actualización:</span>{' '}
+              {data.lastUpdateAt}
+            </p>
+          )}
         </div>
       </main>
       <footer className='mb-3'>MondoTechno &copy; - 2023</footer>
