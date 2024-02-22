@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import './globals.css';
-import { ClerkProvider } from '@clerk/nextjs'
+//import { ClerkProvider } from '@clerk/nextjs'
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] });
 
@@ -15,10 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+   // <ClerkProvider>
     <html lang='es'>
       <body className={poppins.className}>{children}</body>
     </html>
-    </ClerkProvider>
+    //</ClerkProvider>
   );
 }
